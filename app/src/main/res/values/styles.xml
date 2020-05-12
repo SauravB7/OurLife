@@ -9,6 +9,10 @@
         <item name="android:statusBarColor">#00000000</item>
     </style>
 
+    <style name="whiteToolbarIcon" parent="Theme.AppCompat">
+        <item name="android:textColorSecondary">#FFFFFF</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
