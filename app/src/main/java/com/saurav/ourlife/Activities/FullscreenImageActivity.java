@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.View;
 
 import com.saurav.ourlife.Adapters.FullSizeAdapter;
 import com.saurav.ourlife.R;
@@ -20,6 +21,10 @@ public class FullscreenImageActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen_image);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        );
 
         if(savedInstanceState == null) {
             Intent i = getIntent();

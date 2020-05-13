@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.saurav.ourlife.Helper.AWSS3Helper;
+import com.saurav.ourlife.Helper.GenericHelper;
 import com.saurav.ourlife.R;
 
 import java.net.URISyntaxException;
@@ -23,6 +24,7 @@ public class FullSizeAdapter extends PagerAdapter {
     Context context;
     String[] images;
     LayoutInflater layoutInflater;
+    boolean isFullScreen = false;
 
     public FullSizeAdapter(Context context, String[] images) {
         this.context = context;
@@ -41,12 +43,12 @@ public class FullSizeAdapter extends PagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = layoutInflater.inflate(R.layout.full_image_item, null);
+        final View v = layoutInflater.inflate(R.layout.full_image_item, null);
 
         ImageView fullImageView = v.findViewById(R.id.fullImage);
-        FloatingActionButton downloadImage_fab = v.findViewById(R.id.downloadImage_fab);
+        final FloatingActionButton downloadImage_fab = v.findViewById(R.id.downloadImage_fab);
         Glide.with(context).load(images[position]).apply(new RequestOptions().centerInside())
                 .into(fullImageView);
         downloadImage_fab.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +61,24 @@ public class FullSizeAdapter extends PagerAdapter {
                 }
             }
         });
+        fullImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isFullScreen) {
+                    isFullScreen = true;
+                    GenericHelper.hideSystemUI(v);
+                    downloadImage_fab.setVisibility(View.GONE);
+                } else {
+                    isFullScreen = false;
+                    GenericHelper.showSystemUI(v);
+                    downloadImage_fab.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         ViewPager vp = (ViewPager)container;
         vp.addView(v,0);
+
         return v;
     }
 

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore.Images.Media;
 import android.util.Log;
+import android.view.View;
 
 import androidx.core.app.ActivityCompat;
 
@@ -66,5 +67,23 @@ public class GenericHelper {
         }
 
         return imagePath;
+    }
+
+    public static void hideSystemUI(View decorView) {
+        decorView.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+        );
+    }
+
+    public static void showSystemUI(View decorView) {
+        decorView.setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        );
     }
 }
