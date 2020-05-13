@@ -13,12 +13,13 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="20dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_file_download_black_40dp"
         app:fabSize="normal"
-        app:elevation="8dp"
+        app:elevation="4dp"
+        android:outlineSpotShadowColor="@color/colorShadow"
         android:padding="8dp"
         android:id="@+id/downloadImage_fab"/>
 

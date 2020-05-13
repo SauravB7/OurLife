@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">Our Life</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_desc">Navigation header</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <!-- Navigation Menu Strings -->
+    <string name="nav_home">Home</string>
+    <string name="nav_gallery">Gallery</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_login">Login</string>
+    <string name="nav_logout">Logout</string>
+    <string name="nav_myProfile">My Profile</string>
 </resources>

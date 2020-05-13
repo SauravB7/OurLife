@@ -9,7 +9,7 @@
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000"
+        android:background="@color/colorBlack"
         android:id="@+id/viewPagerImage"/>
 
 </RelativeLayout>
