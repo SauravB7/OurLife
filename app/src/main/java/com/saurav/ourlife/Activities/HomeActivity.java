@@ -1,6 +1,7 @@
 package com.saurav.ourlife.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,20 +9,22 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.os.StrictMode;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.google.android.material.navigation.NavigationView;
+import com.saurav.ourlife.Fragments.DashboardFragment;
 import com.saurav.ourlife.Fragments.GalleryFragment;
 import com.saurav.ourlife.Helper.AWSS3Helper;
 import com.saurav.ourlife.Helper.GenericHelper;
@@ -33,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    ActionBarDrawerToggle actionBarToggle;
 
     private static final int PERMISSIONS_CODE = 100;
     private static final String[] PERMISSIONS_ALL = new String[]{
@@ -48,12 +52,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-        if(Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
 
         // Hooks
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -62,20 +62,57 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // Toolbar
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        initApp();
+    }
+
+    @Override
+    public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+        actionBarToggle.syncState();
+    }
+
+    private void initApp() {
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         // Nav Drawer Menu
         navigationView.bringToFront();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        actionBarToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
                 toolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         );
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+        drawerLayout.addDrawerListener(actionBarToggle);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Home Dashboard Fragment
+        loadFragment(new DashboardFragment(), "DASHBOARD");
+
+        //onFragmentBackStackChange
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    String tag = getSupportFragmentManager().findFragmentById(R.id.home_frame).getTag();
+                    switch (tag) {
+                        case "DASHBOARD":
+                            navigationView.setCheckedItem(R.id.nav_home);
+                            toolbar.setBackgroundResource(R.color.colorWhite);
+                            break;
+
+                        case "GALLERY":
+                            navigationView.setCheckedItem(R.id.nav_gallery);
+                            toolbar.setBackgroundResource(R.color.colorSemiTransparent);
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     private void getConfigValues(Context context) {
@@ -98,20 +135,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int menuId = item.getItemId();
         switch (menuId) {
             case R.id.nav_home:
-                startActivity(new Intent(this, HomeActivity.class));
+                loadFragment(new DashboardFragment(), "DASHBOARD");
+                toolbar.setBackgroundResource(R.color.colorWhite);
                 break;
+
             case R.id.nav_gallery:
                 if(!GenericHelper.hasPermission(this, PERMISSIONS_ALL)) {
                     ActivityCompat.requestPermissions(this, PERMISSIONS_ALL, PERMISSIONS_CODE);
                 } else {
                     initiateS3();
-                    final String[] images = S3Helper.listFileURLs("testAlbum").toArray(new String[0]);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArray("imagesURL", images);
-                    GalleryFragment galleryFragment = new GalleryFragment();
-                    galleryFragment.setArguments(bundle);
-
-                    loadFragment(galleryFragment);
+                    initGallery();
                 }
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -124,28 +157,34 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if(requestCode == PERMISSIONS_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initiateS3();
-                final String[] images = S3Helper.listFileURLs("testAlbum").toArray(new String[0]);
-                Bundle bundle = new Bundle();
-                bundle.putStringArray("imagesURL", images);
-                GalleryFragment galleryFragment = new GalleryFragment();
-                galleryFragment.setArguments(bundle);
-
-                loadFragment(galleryFragment);
+                initGallery();
             } else {
                 //TODO: show that no permission given, close and open again to give permission
             }
         }
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home_frame, fragment);
-        transaction.commit();
+        transaction.replace(R.id.home_frame, fragment, tag);
+        transaction.addToBackStack(tag);
+        transaction.commitAllowingStateLoss();
     }
 
     private void initiateS3() {
         getConfigValues(this);
         S3Helper = new AWSS3Helper(BUCKET_NAME, ACCESS_KEY, ACCESS_SECRET, this);
         S3CLIENT = S3Helper.getS3CLIENT();
+    }
+
+    private void initGallery() {
+        final String[] images = S3Helper.listFileURLs("testAlbum").toArray(new String[0]);
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("imagesURL", images);
+        GalleryFragment galleryFragment = new GalleryFragment();
+        galleryFragment.setArguments(bundle);
+        loadFragment(galleryFragment, "GALLERY");
+
+        toolbar.setBackgroundResource(R.color.colorSemiTransparent);
     }
 }

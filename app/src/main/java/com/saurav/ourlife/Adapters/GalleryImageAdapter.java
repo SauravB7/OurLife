@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +34,7 @@ public class GalleryImageAdapter  extends RecyclerView.Adapter<GalleryImageAdapt
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
         return new ImageViewHolder(v);
     }
 

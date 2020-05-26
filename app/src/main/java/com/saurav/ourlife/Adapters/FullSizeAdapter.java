@@ -21,10 +21,10 @@ import java.net.URISyntaxException;
 
 public class FullSizeAdapter extends PagerAdapter {
 
-    Context context;
-    String[] images;
-    LayoutInflater layoutInflater;
-    boolean isFullScreen = false;
+    private Context context;
+    private String[] images;
+    private LayoutInflater layoutInflater;
+    private boolean isFullScreen = false;
 
     public FullSizeAdapter(Context context, String[] images) {
         this.context = context;
@@ -45,12 +45,14 @@ public class FullSizeAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View v = layoutInflater.inflate(R.layout.full_image_item, null);
+        View v = layoutInflater.inflate(R.layout.item_full_image, null);
 
         ImageView fullImageView = v.findViewById(R.id.fullImage);
         final FloatingActionButton downloadImage_fab = v.findViewById(R.id.downloadImage_fab);
         Glide.with(context).load(images[position]).apply(new RequestOptions().centerInside())
                 .into(fullImageView);
+
+        final ViewPager vp = (ViewPager)container;
         downloadImage_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,21 +66,19 @@ public class FullSizeAdapter extends PagerAdapter {
         fullImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isFullScreen) {
-                    isFullScreen = true;
+                if (isFullScreen) {
                     GenericHelper.hideSystemUI(v);
                     downloadImage_fab.setVisibility(View.GONE);
+                    isFullScreen = true;
                 } else {
-                    isFullScreen = false;
                     GenericHelper.showSystemUI(v);
                     downloadImage_fab.setVisibility(View.VISIBLE);
+                    isFullScreen = false;
                 }
             }
         });
 
-        ViewPager vp = (ViewPager)container;
         vp.addView(v,0);
-
         return v;
     }
 
