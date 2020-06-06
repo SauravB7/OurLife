@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF9100</color>
-    <color name="colorPrimaryDark">#E65100</color>
-    <color name="colorPrimaryLight">#FFE0B2</color>
-    <color name="colorAccent">#FFC107</color>
-    <color name="colorPrimaryText">#212121</color>
-    <color name="colorSecondaryText">#757575</color>
+    <color name="colorPrimary">#FFDE03</color>
+    <color name="colorPrimaryDark">#C7AD00</color>
+    <color name="colorPrimaryLight">#FFFF54</color>
+    <color name="colorAccent">#0336FF</color>
+    <color name="colorAccentDark">#0008CA</color>
+    <color name="colorAccentLight">#6F63FF</color>
+
+    <color name="colorPrimaryText">#000000</color>
+    <color name="colorSecondaryText">#FFFFFF</color>
+    <color name="colorBackgroundText">#000000</color>
+    <color name="colorSurfaceText">#000000</color>
+    <color name="colorErrorText">#FFFFFF</color>
+    <color name="colorSubText">#666666</color>
+
+    <color name="colorBackground">#FAFAFA</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorError">#B00020</color>
+
     <color name="colorIcons">#212121</color>
     <color name="colorDivider">#BDBDBD</color>
+
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorShadow">#BDBDBD</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorSemiTransparent">#A0000000</color>
+
+    <color name="colorBottomNavHome">#1F95EA</color>
+    <color name="colorBottomNavFavorites">#E21B58</color>
+    <color name="colorBottomNavSettings">#4FB354</color>
+
+
 </resources>

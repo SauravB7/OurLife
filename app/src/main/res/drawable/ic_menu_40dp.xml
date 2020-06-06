@@ -13,10 +13,10 @@
                 android:startY="0.066"
                 android:type="linear">
                 <item
-                    android:color="@color/colorPrimary"
+                    android:color="@color/colorAccent"
                     android:offset="0.237" />
                 <item
-                    android:color="@color/colorPrimaryDark"
+                    android:color="@color/colorAccentDark"
                     android:offset="0.85" />
             </gradient>
         </aapt:attr>
@@ -30,10 +30,10 @@
                 android:startY="12.066"
                 android:type="linear">
                 <item
-                    android:color="@color/colorPrimary"
+                    android:color="@color/colorAccent"
                     android:offset="0.237" />
                 <item
-                    android:color="@color/colorPrimaryDark"
+                    android:color="@color/colorAccentDark"
                     android:offset="0.85" />
             </gradient>
         </aapt:attr>
@@ -47,10 +47,10 @@
                 android:startY="24.066"
                 android:type="linear">
                 <item
-                    android:color="@color/colorPrimary"
+                    android:color="@color/colorAccent"
                     android:offset="0.237" />
                 <item
-                    android:color="@color/colorPrimaryDark"
+                    android:color="@color/colorAccentDark"
                     android:offset="0.85" />
             </gradient>
         </aapt:attr>

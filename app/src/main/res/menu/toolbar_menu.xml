@@ -4,12 +4,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home_black_40dp"
+            android:icon="@drawable/ic_home"
             android:title="@string/nav_home" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_gallery_black_40dp"
-            android:title="@string/nav_gallery" />
     </group>
 
     <item android:title="@string/nav_profile">

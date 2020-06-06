@@ -3,6 +3,7 @@ package com.saurav.ourlife.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.saurav.ourlife.Activities.FullscreenImageActivity;
 import com.saurav.ourlife.Adapters.GalleryImageAdapter;
+import com.saurav.ourlife.Helper.FragmentHelper;
 import com.saurav.ourlife.Interfaces.IRecyclerViewClickListener;
 import com.saurav.ourlife.R;
 
@@ -21,6 +23,8 @@ public class GalleryFragment extends Fragment {
     protected RecyclerView galleryRecyclerView;
     protected RecyclerView.LayoutManager layoutManager;
     View view;
+    Toolbar toolbar;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_gallery, container, false);
@@ -30,6 +34,8 @@ public class GalleryFragment extends Fragment {
         layoutManager = new GridLayoutManager(getActivity(), 3);
         galleryRecyclerView.setHasFixedSize(true);
         galleryRecyclerView.setLayoutManager(layoutManager);
+
+        FragmentHelper.updateToolbarBG(getActivity(), R.color.colorSurface);
 
         createGallery(images);
 

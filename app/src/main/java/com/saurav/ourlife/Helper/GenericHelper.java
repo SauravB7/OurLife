@@ -1,5 +1,6 @@
 package com.saurav.ourlife.Helper;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -21,6 +22,12 @@ import java.util.Properties;
 
 public class GenericHelper {
     private static final String TAG = "Helper";
+    public static final int PERMISSIONS_CODE = 100;
+    public static final String[] PERMISSIONS_ALL = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.INTERNET
+    };
 
     public static String getConfigValue(Context context, String name) {
         Resources res = context.getResources();
