@@ -31,7 +31,7 @@ public class GalleryFragment extends Fragment {
         String[] images = getArguments().getStringArray("imagesURL");
 
         galleryRecyclerView = view.findViewById(R.id.galleryRecyclerView);
-        layoutManager = new GridLayoutManager(getActivity(), 3);
+        layoutManager = new GridLayoutManager(getActivity(), 4);
         galleryRecyclerView.setHasFixedSize(true);
         galleryRecyclerView.setLayoutManager(layoutManager);
 

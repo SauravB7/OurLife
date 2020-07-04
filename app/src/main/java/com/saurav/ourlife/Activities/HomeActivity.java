@@ -161,7 +161,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         S3CLIENT = S3Helper.getS3CLIENT();
     }
 
-    private void loadFragment(Fragment fragment, String tag) {
+    public void loadFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home_frame, fragment, tag);
         transaction.addToBackStack(tag);

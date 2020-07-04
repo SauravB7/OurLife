@@ -62,7 +62,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
                 break;
 
             case R.id.experienceCard:
-                Toast.makeText(getActivity(), "Development in Progress", Toast.LENGTH_SHORT).show();
+                ((HomeActivity) getActivity()).loadFragment(new AlbumFragment(), "ALBUM");
                 break;
 
             case R.id.bucketlistCard:
