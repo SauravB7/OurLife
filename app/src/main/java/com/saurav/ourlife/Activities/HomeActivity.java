@@ -33,6 +33,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle actionBarToggle;
     ChipNavigationBar bottomNavBar;
 
+    private static final String TAG = HomeActivity.class.getName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,15 +143,4 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         transaction.addToBackStack(tag);
         transaction.commitAllowingStateLoss();
     }
-
-    /*public void initGallery() {
-        final String[] images = S3Helper.listFileURLs("testAlbum").toArray(new String[0]);
-        Bundle bundle = new Bundle();
-        bundle.putStringArray("imagesURL", images);
-        GalleryFragment galleryFragment = new GalleryFragment();
-        galleryFragment.setArguments(bundle);
-        loadFragment(galleryFragment, "GALLERY");
-
-        bottomNavBar.setItemSelected(R.id.home, true);
-    }*/
 }
