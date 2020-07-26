@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
@@ -35,16 +36,25 @@ public class AWSS3Helper {
 
     public AWSS3Helper(Context context) {
         this.BUCKET_NAME = GenericHelper.getConfigValue(context, "s3.bucketName");
-        String ACCESS_KEY = GenericHelper.getConfigValue(context, "s3.accessKey");
-        String ACCESS_SECRET = GenericHelper.getConfigValue(context, "s3.accessSecret");
         this.context = context;
 
-        initiateS3(ACCESS_KEY, ACCESS_SECRET);
+        initiateS3();
     }
 
+    private CognitoCachingCredentialsProvider initCognitoUser() {
+        String POOL_ID = GenericHelper.getConfigValue(context, "cognito.identityPoolId");
 
-    private void initiateS3(String ACCESS_KEY, String ACCESS_SECRET) {
-        this.S3CLIENT = new AmazonS3Client(new BasicAWSCredentials(ACCESS_KEY, ACCESS_SECRET));
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                context,
+                POOL_ID, // Identity pool ID
+                Regions.AP_SOUTH_1 // Region
+        );
+
+        return credentialsProvider;
+    }
+
+    private void initiateS3() {
+        this.S3CLIENT = new AmazonS3Client(initCognitoUser());
         this.S3CLIENT.setRegion(Region.getRegion(Regions.AP_SOUTH_1));
         this.setTransferUtility();
     }
