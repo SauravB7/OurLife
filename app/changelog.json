@@ -1,7 +1,8 @@
 {
-  "latestVersion": "v0.1",
+  "latestVersion": "v0.2",
+  "latestVersionCode": 2,
   "url": "https://github.com/Saurav-CR7/OurLife/releases",
   "releaseNotes": [
-    "- App Updater Added"
+    "- Version updated in Build"
   ]
 }
