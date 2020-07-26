@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.saurav.ourlife.Activities.FullscreenImageActivity;
 import com.saurav.ourlife.Adapters.GalleryImageAdapter;
 import com.saurav.ourlife.Helper.FragmentHelper;
-import com.saurav.ourlife.Interfaces.IRecyclerViewClickListener;
+import com.saurav.ourlife.Interfaces.GalleryRVClickListener;
 import com.saurav.ourlife.R;
 
 public class GalleryFragment extends Fragment {
@@ -43,7 +43,7 @@ public class GalleryFragment extends Fragment {
     }
 
     public void createGallery(final String[] images) {
-        final IRecyclerViewClickListener listener = new IRecyclerViewClickListener() {
+        final GalleryRVClickListener listener = new GalleryRVClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent i = new Intent(getActivity().getApplicationContext(), FullscreenImageActivity.class);

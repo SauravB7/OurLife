@@ -13,8 +13,10 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
 import java.io.File;
@@ -31,10 +33,17 @@ public class AWSS3Helper {
     private static TransferUtility transferUtility;
     private Context context;
 
-    public AWSS3Helper(String BUCKET_NAME, String ACCESS_KEY, String ACCESS_SECRET, Context context) {
-        this.BUCKET_NAME = BUCKET_NAME;
+    public AWSS3Helper(Context context) {
+        this.BUCKET_NAME = GenericHelper.getConfigValue(context, "s3.bucketName");
+        String ACCESS_KEY = GenericHelper.getConfigValue(context, "s3.accessKey");
+        String ACCESS_SECRET = GenericHelper.getConfigValue(context, "s3.accessSecret");
         this.context = context;
 
+        initiateS3(ACCESS_KEY, ACCESS_SECRET);
+    }
+
+
+    private void initiateS3(String ACCESS_KEY, String ACCESS_SECRET) {
         this.S3CLIENT = new AmazonS3Client(new BasicAWSCredentials(ACCESS_KEY, ACCESS_SECRET));
         this.S3CLIENT.setRegion(Region.getRegion(Regions.AP_SOUTH_1));
         this.setTransferUtility();
@@ -45,11 +54,7 @@ public class AWSS3Helper {
                 context);
     }
 
-    public AmazonS3 getS3CLIENT() {
-        return S3CLIENT;
-    }
-
-    public TransferObserver uploadFile(File file, String folderName){
+    /*public TransferObserver uploadFile(File file, String folderName){
         String uploadKey = !folderName.isEmpty() && folderName.length() > 0
                 ? folderName + "/" + file.getName()
                 : file.getName();
@@ -60,7 +65,7 @@ public class AWSS3Helper {
                 file        //The file where the data to upload exists
         );
         return transferObserver;
-    }
+    }*/
 
     public static void downloadFile(String fileURL) throws URISyntaxException {
         File file;
@@ -87,7 +92,7 @@ public class AWSS3Helper {
 
     public List<String> listFileNames(String folderName) {
         ListObjectsV2Request req;
-        if(!folderName.isEmpty() && folderName!= null) {
+        if (!folderName.isEmpty() && folderName != null) {
             req = new ListObjectsV2Request()
                     .withBucketName(BUCKET_NAME)
                     .withPrefix(folderName + "/")
@@ -101,28 +106,27 @@ public class AWSS3Helper {
         ArrayList<String> objectList = new ArrayList<>(objects.getObjectSummaries().size());
 
         for (S3ObjectSummary s3ObjectSummary : objects.getObjectSummaries()) {
-            if(!s3ObjectSummary.getKey().endsWith("/")) {
+            if (!s3ObjectSummary.getKey().endsWith("/")) {
                 objectList.add(s3ObjectSummary.getKey());
             }
         }
         return objectList;
     }
 
-    public List<String> listFileURLs(final String folderName) {
-
-        ListObjectsV2Request req;
-        if(!folderName.isEmpty() && folderName!= null) {
-            req = new ListObjectsV2Request()
-                    .withBucketName(BUCKET_NAME)
-                    .withPrefix(folderName + "/")
-                    .withDelimiter("/");
-        } else {
-            req = new ListObjectsV2Request()
-                    .withBucketName(BUCKET_NAME);
+    public List<String> listFileURLs(String prefix) {
+        String delimiter = "/";
+        if(!prefix.endsWith(delimiter)) {
+            prefix += delimiter;
         }
 
+        ListObjectsV2Request req;
+        req = new ListObjectsV2Request()
+                .withBucketName(BUCKET_NAME)
+                .withPrefix(prefix)
+                .withDelimiter("/");
+
         ListObjectsV2Result objects = S3CLIENT.listObjectsV2(req);
-        ArrayList<String> objectURLs = new ArrayList<>(objects.getObjectSummaries().size());
+        List<String> objectURLs = new ArrayList<>(objects.getObjectSummaries().size());
 
         for (S3ObjectSummary s3ObjectSummary : objects.getObjectSummaries()) {
             if(!s3ObjectSummary.getKey().endsWith("/")) {
@@ -131,6 +135,21 @@ public class AWSS3Helper {
         }
 
         return objectURLs;
+    }
+
+    public List<String> listFolderNames(String prefix) {
+        String delimiter = "/";
+        if(!prefix.endsWith(delimiter)) {
+            prefix += delimiter;
+        }
+
+        ListObjectsRequest req = new ListObjectsRequest()
+                .withBucketName(BUCKET_NAME)
+                .withPrefix(prefix)
+                .withDelimiter(delimiter);
+
+        ObjectListing objects = S3CLIENT.listObjects(req);
+        return objects.getCommonPrefixes();
     }
 
     private String generatePreSignedURL(String key) {

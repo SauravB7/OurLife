@@ -35,6 +35,7 @@
                 android:paddingBottom="20dp">
 
                 <TextView
+                    android:id="@+id/dashboard_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/baloo"
@@ -64,7 +65,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/galleryCard"
+            android:id="@+id/memoriesCard"
             style="@style/TopLeftDashboardCard"
             android:layout_width="160dp"
             android:layout_height="190dp"

@@ -11,23 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.saurav.ourlife.Fragments.DashboardFragment;
-import com.saurav.ourlife.Fragments.GalleryFragment;
-import com.saurav.ourlife.Helper.AWSS3Helper;
-import com.saurav.ourlife.Helper.GenericHelper;
 import com.saurav.ourlife.R;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,10 +32,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     ActionBarDrawerToggle actionBarToggle;
     ChipNavigationBar bottomNavBar;
-
-    AmazonS3 S3CLIENT;
-    AWSS3Helper S3Helper;
-    String BUCKET_NAME, ACCESS_KEY, ACCESS_SECRET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +99,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-
-        //initialize S3 instance
-        initiateS3();
     }
 
     @Override
@@ -137,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
+    /*@Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == GenericHelper.PERMISSIONS_CODE) {
@@ -147,19 +133,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 //TODO: show that no permission given, close and open again to give permission
             }
         }
-    }
-
-    private void getConfigValues(Context context) {
-        BUCKET_NAME = GenericHelper.getConfigValue(context, "s3.bucketName");
-        ACCESS_KEY = GenericHelper.getConfigValue(context, "s3.accessKey");
-        ACCESS_SECRET = GenericHelper.getConfigValue(context, "s3.accessSecret");
-    }
-
-    private void initiateS3() {
-        getConfigValues(this);
-        S3Helper = new AWSS3Helper(BUCKET_NAME, ACCESS_KEY, ACCESS_SECRET, this);
-        S3CLIENT = S3Helper.getS3CLIENT();
-    }
+    }*/
 
     public void loadFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -168,7 +142,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         transaction.commitAllowingStateLoss();
     }
 
-    public void initGallery() {
+    /*public void initGallery() {
         final String[] images = S3Helper.listFileURLs("testAlbum").toArray(new String[0]);
         Bundle bundle = new Bundle();
         bundle.putStringArray("imagesURL", images);
@@ -177,5 +151,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         loadFragment(galleryFragment, "GALLERY");
 
         bottomNavBar.setItemSelected(R.id.home, true);
-    }
+    }*/
 }

@@ -18,7 +18,10 @@ import com.saurav.ourlife.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
+import java.util.TimeZone;
 
 public class GenericHelper {
     private static final String TAG = "Helper";
@@ -37,9 +40,11 @@ public class GenericHelper {
             properties.load(rawResource);
             return properties.getProperty(name);
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             Log.e(TAG, "Failed to open config file.");
-        } catch (Resources.NotFoundException e) {
+        }
+        catch (Resources.NotFoundException e) {
             Log.e(TAG, "Unable to find the config file: " + e.getMessage());
         }
         return null;
@@ -92,5 +97,33 @@ public class GenericHelper {
             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         );
+    }
+
+    public static String getCurrentDateAsString (String option) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+
+        switch (option) {
+            case "DAY":
+                return String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+            case "MONTH":
+                return new SimpleDateFormat("MMMM").format(calendar.getTime());
+                
+            case "YEAR":
+                return String.valueOf(calendar.get(calendar.YEAR));
+
+            default:
+                return new SimpleDateFormat("dd MMMM, YYYY").format(calendar.getTime());
+        }
+    }
+
+    public static String splitS3Keys(String prefix) {
+        String[] str = prefix.replaceAll("/+$", "").split("/");
+
+        return str[str.length - 1].replaceAll(
+                String.format("%s|%s|%s",
+                        "(?<=[A-Z])(?=[A-Z][a-z])",
+                        "(?<=[^A-Z])(?=[A-Z])",
+                        "(?<=[A-Za-z])(?=[^A-Za-z])"), " ");
     }
 }

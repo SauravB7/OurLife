@@ -7,7 +7,7 @@
     android:layout_marginTop="?android:attr/actionBarSize"
     android:background="@color/colorSurface"
     android:orientation="vertical"
-    tools:context=".Fragments.AlbumFragment">
+    tools:context=".Fragments.MemoriesFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -95,7 +95,8 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/colorBackground"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                android:id="@+id/birthdayMemories">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -153,7 +154,8 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/colorBackground"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                android:id="@+id/romanceMemories">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -212,7 +214,8 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/colorBackground"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                android:id="@+id/vacationMemories">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -270,7 +273,8 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/colorBackground"
                 app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
+                app:cardElevation="5dp"
+                android:id="@+id/otherMemories">
 
                 <LinearLayout
                     android:layout_width="match_parent"
