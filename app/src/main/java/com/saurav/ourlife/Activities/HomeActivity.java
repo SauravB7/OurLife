@@ -18,9 +18,7 @@ import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.github.javiersantos.appupdater.AppUpdater;
-import com.github.javiersantos.appupdater.enums.Display;
-import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.artwl.update.UpdateChecker;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.saurav.ourlife.Fragments.DashboardFragment;
@@ -37,6 +35,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ChipNavigationBar bottomNavBar;
 
     private static final String TAG = HomeActivity.class.getName();
+
+    private static final String APP_UPDATE_SERVER_URL = "https://raw.githubusercontent.com/Saurav-CR7/OurLife/dev/app/changelog.json";
+    private static final boolean IS_AUTO_INSTALL = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +68,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void checkForAppUpdate() {
-        AppUpdater appUpdater = new AppUpdater(this)
-                .setDisplay(Display.DIALOG)
-                .setUpdateFrom(UpdateFrom.GITHUB)
-                .setGitHubUserAndRepo("Saurav-CR7", "OurLife")
-                .setTitleOnUpdateAvailable("Update Available")
-                .setContentOnUpdateAvailable("Check out the latest version available!")
-                .setButtonUpdate("Update now?")
-                .setButtonDismiss("Maybe later")
-                .setButtonDoNotShowAgain(null);
-
-        appUpdater.start();
+        UpdateChecker.checkForDialog(this, APP_UPDATE_SERVER_URL, IS_AUTO_INSTALL, false);
     }
 
     private void initApp() {

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.artwl.update.UpdateChecker;
 import com.google.android.material.card.MaterialCardView;
 import com.saurav.ourlife.Activities.HomeActivity;
 import com.saurav.ourlife.Helper.FragmentHelper;
