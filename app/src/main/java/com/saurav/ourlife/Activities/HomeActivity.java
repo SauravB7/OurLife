@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .setButtonUpdate("Update now?")
                 .setButtonDismiss("Maybe later")
                 .setButtonDoNotShowAgain(null);
-        
+
         appUpdater.start();
     }
 
