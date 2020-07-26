@@ -64,7 +64,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
                 } else {
                     ((HomeActivity) getActivity()).initGallery();
                 }*/
-                ((HomeActivity) getActivity()).loadFragment(new MemoriesFragment(), "MEMORIES>");
+                ((HomeActivity) getActivity()).loadFragment(new MemoriesFragment(), "MEMORIES");
                 break;
 
             case R.id.experienceCard:

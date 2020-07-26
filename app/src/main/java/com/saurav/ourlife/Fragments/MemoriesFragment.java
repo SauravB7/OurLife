@@ -55,7 +55,7 @@ public class MemoriesFragment extends Fragment implements View.OnClickListener {
                 data.putString("memoriesCategory", "Birthdays");
                 albumsFragment.setArguments(data);
 
-                ((HomeActivity) getActivity()).loadFragment(albumsFragment, "MEMORIES");
+                ((HomeActivity) getActivity()).loadFragment(albumsFragment, "BIRTHDAYS");
                 break;
 
             case R.id.romanceMemories:
