@@ -15,4 +15,11 @@
     <string name="album_memories_subtext">\'Cause its what defines us.</string>
 
     <string name="instructions">Place your fingertip on the Fingerprint Sensor to verify your identity.</string>
+
+    <!-- For Updater -->
+    <string name="dialogPositiveButton" override="true">Download</string>
+    <string name="dialogNegativeButton" override="true">Later</string>
+    <string name="app_no_new_update" override="true">No New Version</string>
+    <string name="download_progress" override="true">Downloading:%1$d%%</string>
+    <string name="download_success" override="true">Download Success. Click Install.</string>
 </resources>
