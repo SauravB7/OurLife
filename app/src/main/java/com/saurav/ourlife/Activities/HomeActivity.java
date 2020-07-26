@@ -18,6 +18,9 @@ import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
 import com.google.android.material.navigation.NavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.saurav.ourlife.Fragments.DashboardFragment;
@@ -60,6 +63,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         actionBarToggle.syncState();
+        checkForAppUpdate();
+    }
+
+    private void checkForAppUpdate() {
+        AppUpdater appUpdater = new AppUpdater(this)
+                .setDisplay(Display.DIALOG)
+                .setUpdateFrom(UpdateFrom.JSON)
+                .setUpdateJSON("https://raw.githubusercontent.com/Saurav-CR7/OurLife/dev/app/changelog.json")
+                .setTitleOnUpdateAvailable("Update Available")
+                .setContentOnUpdateAvailable("Check out the latest version available!")
+                .setButtonUpdate("Update now?")
+                .setButtonDismiss("Maybe later")
+                .setButtonDoNotShowAgain(null);
+        
+        appUpdater.start();
     }
 
     private void initApp() {
