@@ -66,7 +66,10 @@ public class MemoriesFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.vacationMemories:
-                Toast.makeText(getActivity(), "Development in Progress", Toast.LENGTH_SHORT).show();
+                data.putString("memoriesCategory", "Vacation");
+                albumsFragment.setArguments(data);
+
+                ((HomeActivity) getActivity()).loadFragment(albumsFragment, "VACATION");
                 break;
 
             case R.id.otherMemories:
