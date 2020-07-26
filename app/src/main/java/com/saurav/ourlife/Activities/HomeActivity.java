@@ -57,20 +57,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Bottom Nav bar
         bottomNavBar.setItemSelected(R.id.home, true);
 
+        checkForAppUpdate();
         initApp();
     }
 
     @Override
     public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         actionBarToggle.syncState();
-        checkForAppUpdate();
     }
 
     private void checkForAppUpdate() {
         AppUpdater appUpdater = new AppUpdater(this)
                 .setDisplay(Display.DIALOG)
-                .setUpdateFrom(UpdateFrom.JSON)
-                .setUpdateJSON("https://raw.githubusercontent.com/Saurav-CR7/OurLife/dev/app/changelog.json")
+                .setUpdateFrom(UpdateFrom.GITHUB)
+                .setGitHubUserAndRepo("Saurav-CR7", "OurLife")
                 .setTitleOnUpdateAvailable("Update Available")
                 .setContentOnUpdateAvailable("Check out the latest version available!")
                 .setButtonUpdate("Update now?")
