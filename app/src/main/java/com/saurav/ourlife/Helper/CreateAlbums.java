@@ -29,10 +29,26 @@ public class CreateAlbums extends AsyncTask<String, Void, Album[]> {
         String memoriesCategory = strings[0];
         AWSS3Helper S3Helper = new AWSS3Helper(context);
         Album[] albums = null;
+        List<String> folderNames;
 
         switch (memoriesCategory) {
             case "Birthdays":
-                List<String> folderNames = S3Helper.listFolderNames("Memories/Birthdays");
+                folderNames = S3Helper.listFolderNames("Memories/Birthdays");
+                albums = generateAlbumsArray(folderNames, S3Helper);
+                break;
+
+            case "Vacation":
+                folderNames = S3Helper.listFolderNames("Memories/Vacation");
+                albums = generateAlbumsArray(folderNames, S3Helper);
+                break;
+
+            case "Romance":
+                folderNames = S3Helper.listFolderNames("Memories/Romance");
+                albums = generateAlbumsArray(folderNames, S3Helper);
+                break;
+
+            case "Others":
+                folderNames = S3Helper.listFolderNames("Memories/Others");
                 albums = generateAlbumsArray(folderNames, S3Helper);
                 break;
         }
