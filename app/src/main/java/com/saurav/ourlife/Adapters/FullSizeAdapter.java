@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -15,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.saurav.ourlife.Helper.AWSS3Helper;
 import com.saurav.ourlife.Helper.GenericHelper;
+import com.saurav.ourlife.Interfaces.ImageItemListener;
 import com.saurav.ourlife.R;
 
 import java.net.URISyntaxException;
@@ -25,10 +27,12 @@ public class FullSizeAdapter extends PagerAdapter {
     private String[] images;
     private LayoutInflater layoutInflater;
     private boolean isFullScreen = false;
+    private ImageItemListener itemListener;
 
-    public FullSizeAdapter(Context context, String[] images) {
+    public FullSizeAdapter(Context context, String[] images, ImageItemListener itemListener) {
         this.context = context;
         this.images = images;
+        this.itemListener = itemListener;
     }
 
     @Override
@@ -56,10 +60,14 @@ public class FullSizeAdapter extends PagerAdapter {
         downloadImage_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    AWSS3Helper.downloadFile(images[position]);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                if(GenericHelper.hasPermission(context, GenericHelper.PERMISSIONS_ALL)) {
+                    try {
+                        AWSS3Helper.downloadFile(images[position], context);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    itemListener.setPosition(position);
                 }
             }
         });

@@ -27,6 +27,18 @@ public class FingerprintAuthenticationActivity extends AppCompatActivity {
         autheticateLogin();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        autheticateLogin();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        autheticateLogin();
+    }
+
     private void autheticateLogin() {
         //get instance of autheticator
         final BiometricPrompt myBiometricPrompt = createAutheticator();

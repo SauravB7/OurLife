@@ -6,7 +6,7 @@
     <!-- Navigation Menu Strings -->
     <string name="nav_home">Home</string>
     <string name="nav_gallery">Gallery</string>
-    <string name="nav_profile">Profile</string>
+    <string name="nav_profile">Profile (Under Development)</string>
     <string name="nav_login">Login</string>
     <string name="nav_logout">Logout</string>
     <string name="nav_myProfile">My Profile</string>
@@ -17,6 +17,7 @@
     <string name="instructions">Place your fingertip on the Fingerprint Sensor to verify your identity.</string>
 
     <!-- For Updater -->
+    <string name="newUpdateAvailable" override="true">New Update Available</string>
     <string name="dialogPositiveButton" override="true">Download</string>
     <string name="dialogNegativeButton" override="true">Later</string>
     <string name="app_no_new_update" override="true">No New Version</string>

@@ -24,7 +24,7 @@ import com.saurav.ourlife.R;
 public class DashboardFragment extends Fragment implements View.OnClickListener {
 
     View view;
-    TextView dashboardDate;
+    TextView dashboardDate, dashboardEvent;
     private MaterialCardView memoriesCard, experienceCard, bucketlistCard, quizCard;
 
     @Override
@@ -38,10 +38,10 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // defining hooks for Cards
-        memoriesCard = (MaterialCardView) view.findViewById(R.id.memoriesCard);
-        experienceCard = (MaterialCardView) view.findViewById(R.id.experienceCard);
-        bucketlistCard = (MaterialCardView) view.findViewById(R.id.bucketlistCard);
-        quizCard = (MaterialCardView) view.findViewById(R.id.quizCard);
+        memoriesCard = view.findViewById(R.id.memoriesCard);
+        experienceCard = view.findViewById(R.id.experienceCard);
+        bucketlistCard = view.findViewById(R.id.bucketlistCard);
+        quizCard = view.findViewById(R.id.quizCard);
 
         // set ClickListener to Cards
         memoriesCard.setOnClickListener(this);
@@ -50,21 +50,19 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         quizCard.setOnClickListener(this);
 
         //set date for events card
+        dashboardEvent = view.findViewById(R.id.dashboard_event);
         dashboardDate = view.findViewById(R.id.dashboard_date);
         dashboardDate.setText(GenericHelper.getCurrentDateAsString(""));
+
+        if(dashboardDate.getText().toString().equalsIgnoreCase("28 July, 2020")) {
+            dashboardEvent.setText("HAPPY BIRTHDAY..!!");
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.memoriesCard:
-                /*if(!GenericHelper.hasPermission(getActivity(), GenericHelper.PERMISSIONS_ALL)) {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            GenericHelper.PERMISSIONS_ALL,
-                            GenericHelper.PERMISSIONS_CODE);
-                } else {
-                    ((HomeActivity) getActivity()).initGallery();
-                }*/
                 ((HomeActivity) getActivity()).loadFragment(new MemoriesFragment(), "MEMORIES");
                 break;
 

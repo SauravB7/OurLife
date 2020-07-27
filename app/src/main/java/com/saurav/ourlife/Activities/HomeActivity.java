@@ -53,7 +53,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // Toolbar
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Bottom Nav bar
         bottomNavBar.setItemSelected(R.id.home, true);
@@ -103,9 +102,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             bottomNavBar.setItemSelected(R.id.home, true);
                             break;
 
-                        case "GALLERY":
+                        /*case "GALLERY":
                             bottomNavBar.setItemSelected(R.id.favorites, true);
-                            break;
+                            break;*/
                     }
                 }
             }

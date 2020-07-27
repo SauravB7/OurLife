@@ -2,11 +2,16 @@ package com.saurav.ourlife.Helper;
 
 import android.content.Context;
 import android.os.Environment;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -19,6 +24,7 @@ import com.amazonaws.services.s3.model.ListObjectsV2Request;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.saurav.ourlife.Activities.FullscreenImageActivity;
 
 import java.io.File;
 import java.net.URI;
@@ -77,7 +83,7 @@ public class AWSS3Helper {
         return transferObserver;
     }*/
 
-    public static void downloadFile(String fileURL) throws URISyntaxException {
+    public static void downloadFile(String fileURL, Context context) throws URISyntaxException {
         File file;
         URI fileToBeDownloaded = new URI(fileURL);
         AmazonS3URI S3URI = new AmazonS3URI(fileToBeDownloaded);
@@ -92,11 +98,27 @@ public class AWSS3Helper {
         file = new File(downloadFolder + File.separator + S3URI.getKey());
 
         if(!file.exists()) {
-            transferUtility.download(
-                    S3URI.getBucket(),
-                    S3URI.getKey(),
-                    file
-            );
+            TransferObserver observer = transferUtility.download(S3URI.getBucket(), S3URI.getKey(), file);
+            ((FullscreenImageActivity)context).downloadProgress.setVisibility(View.VISIBLE);
+            observer.setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if(state == TransferState.COMPLETED || state == TransferState.FAILED) {
+                        ((FullscreenImageActivity)context).downloadProgress.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    int currentProgress = (int) ((bytesCurrent / bytesTotal) * 100);
+                    ((FullscreenImageActivity)context).downloadProgress.setProgress(currentProgress);
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+
+                }
+            });
         }
     }
 

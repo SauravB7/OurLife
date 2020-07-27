@@ -8,14 +8,14 @@
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true"
     tools:context=".Activities.HomeActivity"
-    tools:openDrawer="start">
+    tools:openDrawer="">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-
+        app:headerLayout="@layout/item_drawer_header"
         app:menu="@menu/toolbar_menu" />
 
     <RelativeLayout
