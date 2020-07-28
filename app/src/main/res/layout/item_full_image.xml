@@ -23,4 +23,13 @@
         android:padding="8dp"
         android:id="@+id/downloadImage_fab"/>
 
+    <ProgressBar
+        android:id="@+id/imageProgress"
+        android:indeterminate="true"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_centerInParent="true"
+        android:progressDrawable="@drawable/seek_progressbar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+
 </RelativeLayout>

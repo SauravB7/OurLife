@@ -47,8 +47,8 @@ public class GalleryImageAdapter  extends RecyclerView.Adapter<GalleryImageAdapt
         final ProgressBar progressBar = holder.progressBar;
 
         Glide.with(context).load(new GlideURLCustomCacheKey(currentImage))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .thumbnail(0.1f)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .sizeMultiplier(0.15f)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

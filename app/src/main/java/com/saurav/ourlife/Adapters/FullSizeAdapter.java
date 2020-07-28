@@ -1,18 +1,25 @@
 package com.saurav.ourlife.Adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.saurav.ourlife.Helper.AWSS3Helper;
 import com.saurav.ourlife.Helper.GlideURLCustomCacheKey;
@@ -54,9 +61,24 @@ public class FullSizeAdapter extends PagerAdapter {
 
         ImageView fullImageView = v.findViewById(R.id.fullImage);
         final FloatingActionButton downloadImage_fab = v.findViewById(R.id.downloadImage_fab);
+        final ProgressBar imageProgress = v.findViewById(R.id.imageProgress);
+
         Glide.with(context).load(new GlideURLCustomCacheKey(images[position]))
                 .apply(new RequestOptions().centerInside())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        imageProgress.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        imageProgress.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(fullImageView);
 
         final ViewPager vp = (ViewPager)container;
