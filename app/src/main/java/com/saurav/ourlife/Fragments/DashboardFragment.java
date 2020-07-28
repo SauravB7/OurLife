@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,11 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.artwl.update.UpdateChecker;
 import com.google.android.material.card.MaterialCardView;
 import com.saurav.ourlife.Activities.HomeActivity;
 import com.saurav.ourlife.Helper.FragmentHelper;
-import com.saurav.ourlife.Helper.GenericHelper;
+import com.saurav.ourlife.Helper.Utils;
 import com.saurav.ourlife.R;
 
 public class DashboardFragment extends Fragment implements View.OnClickListener {
@@ -52,7 +49,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         //set date for events card
         dashboardEvent = view.findViewById(R.id.dashboard_event);
         dashboardDate = view.findViewById(R.id.dashboard_date);
-        dashboardDate.setText(GenericHelper.getCurrentDateAsString(""));
+        dashboardDate.setText(Utils.getCurrentDateAsString(""));
 
         if(dashboardDate.getText().toString().equalsIgnoreCase("28 July, 2020")) {
             dashboardEvent.setText("HAPPY BIRTHDAY..!!");

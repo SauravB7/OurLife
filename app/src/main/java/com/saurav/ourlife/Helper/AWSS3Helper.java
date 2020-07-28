@@ -3,12 +3,9 @@ package com.saurav.ourlife.Helper;
 import android.content.Context;
 import android.os.Environment;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.amazonaws.HttpMethod;
-import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transfermanager.TransferManager;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
@@ -41,14 +38,14 @@ public class AWSS3Helper {
     private Context context;
 
     public AWSS3Helper(Context context) {
-        this.BUCKET_NAME = GenericHelper.getConfigValue(context, "s3.bucketName");
+        this.BUCKET_NAME = Utils.getConfigValue(context, "s3.bucketName");
         this.context = context;
 
         initiateS3();
     }
 
     private CognitoCachingCredentialsProvider initCognitoUser() {
-        String POOL_ID = GenericHelper.getConfigValue(context, "cognito.identityPoolId");
+        String POOL_ID = Utils.getConfigValue(context, "cognito.identityPoolId");
 
         CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                 context,
@@ -82,6 +79,13 @@ public class AWSS3Helper {
         );
         return transferObserver;
     }*/
+
+    public static String getKeyFromPresignedURL(String fileURL) throws URISyntaxException {
+        URI fileURI = new URI(fileURL);
+        AmazonS3URI S3URI = new AmazonS3URI(fileURI);
+
+        return S3URI.getKey();
+    }
 
     public static void downloadFile(String fileURL, Context context) throws URISyntaxException {
         File file;

@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 
 import com.saurav.ourlife.Adapters.FullSizeAdapter;
 import com.saurav.ourlife.Helper.AWSS3Helper;
-import com.saurav.ourlife.Helper.GenericHelper;
+import com.saurav.ourlife.Helper.Utils;
 import com.saurav.ourlife.Interfaces.ImageItemListener;
 import com.saurav.ourlife.R;
 
@@ -50,7 +50,7 @@ public class FullscreenImageActivity extends Activity {
             @Override
             public void setPosition(int position) {
                 downloadPosition = position;
-                ActivityCompat.requestPermissions(FullscreenImageActivity.this, GenericHelper.PERMISSIONS_ALL, GenericHelper.PERMISSIONS_CODE);
+                ActivityCompat.requestPermissions(FullscreenImageActivity.this, Utils.getPermissionsAll(), Utils.getPermissionsCode());
             }
         };
 
@@ -63,7 +63,7 @@ public class FullscreenImageActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == GenericHelper.PERMISSIONS_CODE) {
+        if(requestCode == Utils.getPermissionsCode()) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
                     AWSS3Helper.downloadFile(images[downloadPosition], this);

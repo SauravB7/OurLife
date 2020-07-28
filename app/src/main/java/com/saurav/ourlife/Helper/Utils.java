@@ -23,14 +23,26 @@ import java.util.Calendar;
 import java.util.Properties;
 import java.util.TimeZone;
 
-public class GenericHelper {
+public class Utils {
     private static final String TAG = "Helper";
-    public static final int PERMISSIONS_CODE = 100;
-    public static final String[] PERMISSIONS_ALL = new String[]{
+    private static final int PERMISSIONS_CODE = 100;
+    private static final String[] PERMISSIONS_ALL = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET
     };
+
+    public static int getPermissionsCode() {
+        return PERMISSIONS_CODE;
+    }
+
+    public static String getTAG() {
+        return TAG;
+    }
+
+    public static String[] getPermissionsAll() {
+        return PERMISSIONS_ALL;
+    }
 
     public static String getConfigValue(Context context, String name) {
         Resources res = context.getResources();
@@ -42,10 +54,10 @@ public class GenericHelper {
 
         }
         catch (IOException e) {
-            Log.e(TAG, "Failed to open config file.");
+            Log.e(getTAG(), "Failed to open config file.");
         }
         catch (Resources.NotFoundException e) {
-            Log.e(TAG, "Unable to find the config file: " + e.getMessage());
+            Log.e(getTAG(), "Unable to find the config file: " + e.getMessage());
         }
         return null;
     }

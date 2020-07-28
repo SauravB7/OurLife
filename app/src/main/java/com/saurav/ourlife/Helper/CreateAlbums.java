@@ -67,7 +67,7 @@ public class CreateAlbums extends AsyncTask<String, Void, Album[]> {
         Album[] albums = new Album[folderNames.size()];
 
         for(int i = 0; i<folderNames.size(); i++) {
-            String folderName = GenericHelper.splitS3Keys(folderNames.get(i));
+            String folderName = Utils.splitS3Keys(folderNames.get(i));
             String[] imagePaths = S3Helper.listFileURLs(folderNames.get(i)).toArray(new String[0]);
             Album album = new Album(folderName, imagePaths[0], imagePaths.length, imagePaths);
 

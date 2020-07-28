@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.saurav.ourlife.Helper.AWSS3Helper;
-import com.saurav.ourlife.Helper.GenericHelper;
+import com.saurav.ourlife.Helper.GlideURLCustomCacheKey;
+import com.saurav.ourlife.Helper.Utils;
 import com.saurav.ourlife.Interfaces.ImageItemListener;
 import com.saurav.ourlife.R;
 
@@ -53,14 +54,16 @@ public class FullSizeAdapter extends PagerAdapter {
 
         ImageView fullImageView = v.findViewById(R.id.fullImage);
         final FloatingActionButton downloadImage_fab = v.findViewById(R.id.downloadImage_fab);
-        Glide.with(context).load(images[position]).apply(new RequestOptions().centerInside())
+        Glide.with(context).load(new GlideURLCustomCacheKey(images[position]))
+                .apply(new RequestOptions().centerInside())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(fullImageView);
 
         final ViewPager vp = (ViewPager)container;
         downloadImage_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(GenericHelper.hasPermission(context, GenericHelper.PERMISSIONS_ALL)) {
+                if(Utils.hasPermission(context, Utils.getPermissionsAll())) {
                     try {
                         AWSS3Helper.downloadFile(images[position], context);
                     } catch (URISyntaxException e) {
@@ -75,11 +78,11 @@ public class FullSizeAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 if (isFullScreen) {
-                    GenericHelper.hideSystemUI(v);
+                    Utils.hideSystemUI(v);
                     downloadImage_fab.setVisibility(View.GONE);
                     isFullScreen = true;
                 } else {
-                    GenericHelper.showSystemUI(v);
+                    Utils.showSystemUI(v);
                     downloadImage_fab.setVisibility(View.VISIBLE);
                     isFullScreen = false;
                 }

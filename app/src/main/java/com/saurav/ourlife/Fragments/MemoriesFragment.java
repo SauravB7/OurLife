@@ -4,19 +4,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.card.MaterialCardView;
 import com.saurav.ourlife.Activities.HomeActivity;
-import com.saurav.ourlife.Helper.GenericHelper;
 import com.saurav.ourlife.R;
 
 public class MemoriesFragment extends Fragment implements View.OnClickListener {

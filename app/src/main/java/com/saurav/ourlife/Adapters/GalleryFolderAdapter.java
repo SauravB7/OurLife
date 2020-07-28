@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.saurav.ourlife.DataClass.Album;
+import com.saurav.ourlife.Helper.GlideURLCustomCacheKey;
 import com.saurav.ourlife.Interfaces.AlbumsRVClickListener;
 import com.saurav.ourlife.R;
 
@@ -50,7 +52,9 @@ public class GalleryFolderAdapter  extends RecyclerView.Adapter<GalleryFolderAda
         final TextView folderName = holder.folderName;
         final TextView folderImageCount = holder.folderImageCount;
 
-        Glide.with(context).load(currentImage)
+        Glide.with(context).load(new GlideURLCustomCacheKey(currentImage))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(0.25f)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
