@@ -1,5 +1,5 @@
 {
-  "url":"https://github.com/Saurav-CR7/OurLife/releases/download/v0.3.1.0/OurLife-v0.3.1.0.apk",
-  "versionCode":6,
-  "updateMessage":"Vacation Memories bug fixed"
+  "url":"https://github.com/Saurav-CR7/OurLife/releases/download/v0.3.2.0/OurLife-v0.3.2.0.apk",
+  "versionCode":7,
+  "updateMessage":"- Implemented Image Cache and Loader"
 }
