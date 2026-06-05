@@ -9,7 +9,15 @@
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000"
+        android:background="@color/colorBlack"
         android:id="@+id/viewPagerImage"/>
+
+    <ProgressBar
+        android:id="@+id/downloadProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scaleX="2"
+        android:scaleY="2"/>
 
 </RelativeLayout>

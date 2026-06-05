@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,19 +14,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.saurav.ourlife.Interfaces.IRecyclerViewClickListener;
+import com.saurav.ourlife.Helper.GlideURLCustomCacheKey;
+import com.saurav.ourlife.Interfaces.GalleryRVClickListener;
 import com.saurav.ourlife.R;
 
 public class GalleryImageAdapter  extends RecyclerView.Adapter<GalleryImageAdapter.ImageViewHolder> {
 
     Context context;
     String[] urlList;
-    IRecyclerViewClickListener clickListener;
+    GalleryRVClickListener clickListener;
 
-    public GalleryImageAdapter(Context context, String[] urlList, IRecyclerViewClickListener clickListener) {
+    public GalleryImageAdapter(Context context, String[] urlList, GalleryRVClickListener clickListener) {
         this.context = context;
         this.urlList = urlList;
         this.clickListener = clickListener;
@@ -35,7 +36,7 @@ public class GalleryImageAdapter  extends RecyclerView.Adapter<GalleryImageAdapt
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
         return new ImageViewHolder(v);
     }
 
@@ -45,7 +46,9 @@ public class GalleryImageAdapter  extends RecyclerView.Adapter<GalleryImageAdapt
         final ImageView imageView = holder.imageView;
         final ProgressBar progressBar = holder.progressBar;
 
-        Glide.with(context).load(currentImage)
+        Glide.with(context).load(new GlideURLCustomCacheKey(currentImage))
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .sizeMultiplier(0.15f)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

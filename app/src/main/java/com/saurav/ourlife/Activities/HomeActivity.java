@@ -1,59 +1,118 @@
 package com.saurav.ourlife.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.os.StrictMode;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
+import com.artwl.update.UpdateChecker;
 import com.google.android.material.navigation.NavigationView;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.saurav.ourlife.Fragments.DashboardFragment;
 import com.saurav.ourlife.R;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     // Variable
+    public Toolbar toolbar;
+
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-    Toolbar toolbar;
+    ActionBarDrawerToggle actionBarToggle;
+    ChipNavigationBar bottomNavBar;
+
+    private static final String TAG = HomeActivity.class.getName();
+
+    private static final String APP_UPDATE_SERVER_URL = "https://raw.githubusercontent.com/Saurav-CR7/OurLife/dev/app/changelog.json";
+    private static final boolean IS_AUTO_INSTALL = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
         // Hooks
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+        bottomNavBar = findViewById(R.id.nav_bottom);
 
         // Toolbar
         setSupportActionBar(toolbar);
 
+        // Bottom Nav bar
+        bottomNavBar.setItemSelected(R.id.home, true);
+
+        checkForAppUpdate();
+        initApp();
+    }
+
+    @Override
+    public void onPostCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        actionBarToggle.syncState();
+    }
+
+    private void checkForAppUpdate() {
+        UpdateChecker.checkForDialog(this, APP_UPDATE_SERVER_URL, IS_AUTO_INSTALL, false);
+    }
+
+    private void initApp() {
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         // Nav Drawer Menu
         navigationView.bringToFront();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        actionBarToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
                 toolbar,
                 R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
         );
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+        drawerLayout.addDrawerListener(actionBarToggle);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //Home Dashboard Fragment
+        loadFragment(new DashboardFragment(), "DASHBOARD");
+
+        //onFragmentBackStackChange
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    String tag = getSupportFragmentManager().findFragmentById(R.id.home_frame).getTag();
+                    switch (tag) {
+                        case "DASHBOARD":
+                            navigationView.setCheckedItem(R.id.nav_home);
+                            bottomNavBar.setItemSelected(R.id.home, true);
+                            break;
+
+                        /*case "GALLERY":
+                            bottomNavBar.setItemSelected(R.id.favorites, true);
+                            break;*/
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-
         if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
@@ -61,22 +120,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int menuId = item.getItemId();
         switch (menuId) {
             case R.id.nav_home:
+                loadFragment(new DashboardFragment(), "DASHBOARD");
+                bottomNavBar.setItemSelected(R.id.home, true);
                 break;
-            case R.id.nav_gallery:
-                Intent i = new Intent(getApplicationContext(), GalleryActivity.class);
-                startActivity(i);
         }
-
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void loadFragment(Fragment fragment) {
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == GenericHelper.PERMISSIONS_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initGallery();
+            } else {
+                //TODO: show that no permission given, close and open again to give permission
+            }
+        }
+    }*/
+
+    public void loadFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home_frame, fragment, tag);
+        transaction.addToBackStack(tag);
+        transaction.commitAllowingStateLoss();
     }
 }
